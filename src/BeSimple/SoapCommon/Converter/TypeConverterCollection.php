@@ -75,10 +75,18 @@ class TypeConverterCollection
                 'type_name' => $converter->getTypeName(),
                 'type_ns'   => $converter->getTypeNamespace(),
                 'from_xml'  => function($input) use ($converter) {
-                    return $converter->convertXmlToPhp($input);
+					try {
+						return $converter->convertXmlToPhp($input);
+					} catch (\Exception $e) {
+						throw new \SoapFault((string)$e->getCode(), $e->getMessage());
+					}
                 },
                 'to_xml'    => function($input) use ($converter) {
-                    return $converter->convertPhpToXml($input);
+					try {
+						return $converter->convertXmlToPhp($input);
+					} catch (\Exception $e) {
+						throw new \SoapFault((string)$e->getCode(), $e->getMessage());
+					}
                 },
             );
         }
